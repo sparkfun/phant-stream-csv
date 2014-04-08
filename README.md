@@ -1,6 +1,6 @@
 # phant-stream-csv [![Build Status](https://secure.travis-ci.org/sparkfun/phant-stream-csv.png?branch=master)](http://travis-ci.org/sparkfun/phant-stream-csv)
 
-test metadata for phant development
+readable & writable stream for phant data storage.  this should save space when compared to phant-stream-json
 
 ## Getting Started
 Install the module with: `npm install phant-stream-csv`
