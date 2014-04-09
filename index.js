@@ -66,7 +66,7 @@ app.readStream = function(id, page) {
 
 };
 
-app.sortObject = function(data) {
+app.sortKeys = function(data) {
 
   var keys = [],
       sorted = [];
@@ -79,21 +79,25 @@ app.sortObject = function(data) {
 
   }
 
-  keys.sort();
-
-  for(var i=0; i < keys.length; i++) {
-    k = keys[i];
-    sorted.push(data[k]);
-  }
-
-  return sorted;
+  return keys.sort();
 
 };
 
 app.write = function(id, data) {
 
   var stream = this.writeStream(id),
-      sorted = this.sortObject(data);
+      keys = this.sortKeys(data),
+      sorted = [],
+      k;
+
+  for(var i=0; i < keys.length; i++) {
+    k = keys[i];
+    sorted.push(data[k]);
+  }
+
+  stringify([keys], function(err, output) {
+    stream.writeHeaders(output);
+  });
 
   stringify([sorted], function(err, output){
     stream.end(output + '\n');
