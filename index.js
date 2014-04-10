@@ -12,7 +12,8 @@
 var util = require('util'),
     events = require('events'),
     async = require('async'),
-    stringify = require('csv-stringify'),
+    toCsv = require('csv-stringify'),
+    fromCsv = require('csv-streamify'),
     helpers = require('./lib/helpers'),
     Readable = require('./lib/readable'),
     Writable = require('./lib/writable');
@@ -66,6 +67,25 @@ app.readStream = function(id, page) {
 
 };
 
+app.objectReadStream = function(id, page) {
+
+  var read = this.readStream(id, page),
+      transformed = read.pipe(fromCsv({objectMode:true, columns: true}));
+
+  transformed.all = read.all;
+
+  read.on('error', function(err) {
+    transformed.emit('error', err);
+  });
+
+  read.on('open', function() {
+    transformed.emit('open');
+  });
+
+  return transformed;
+
+};
+
 app.sortKeys = function(data) {
 
   var keys = [],
@@ -95,11 +115,11 @@ app.write = function(id, data) {
     sorted.push(data[k]);
   }
 
-  stringify([keys], function(err, output) {
+  toCsv(keys, function(err, output){
     stream.writeHeaders(output);
   });
 
-  stringify([sorted], function(err, output){
+  toCsv(sorted, function(err, output){
     stream.end(output + '\n');
   });
 
