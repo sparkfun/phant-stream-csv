@@ -40,6 +40,8 @@ function PhantStream(options) {
   // apply the options
   util._extend(this, options);
 
+  toCsv.eol = '\n';
+
   // point the file helpers at passed root folder
   this.helpers = helpers({root: this.directory});
 
