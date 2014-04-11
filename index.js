@@ -12,7 +12,7 @@
 var util = require('util'),
     events = require('events'),
     async = require('async'),
-    toCsv = require('csv-string').stringify,
+    CSV = require('csv-string'),
     fromCsv = require('csv-streamify'),
     helpers = require('./lib/helpers'),
     Readable = require('./lib/readable'),
@@ -40,7 +40,7 @@ function PhantStream(options) {
   // apply the options
   util._extend(this, options);
 
-  toCsv.eol = '\n';
+  CSV.eol = '\n';
 
   // point the file helpers at passed root folder
   this.helpers = helpers({root: this.directory});
@@ -117,8 +117,8 @@ app.write = function(id, data) {
     sorted.push(data[k]);
   }
 
-  stream.writeHeaders(toCsv(keys));
-  stream.end(toCsv(sorted));
+  stream.writeHeaders(CSV.stringify(keys));
+  stream.end(CSV.stringify(sorted));
 
 };
 
