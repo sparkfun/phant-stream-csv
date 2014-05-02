@@ -1,6 +1,6 @@
 {
   "name": "phant-stream-csv",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "main": "index.js",
   "description": "csv storage for phant data",
   "homepage": "https://github.com/sparkfun/phant-stream-csv",
