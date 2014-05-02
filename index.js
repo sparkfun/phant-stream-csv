@@ -114,7 +114,7 @@ app.write = function(id, data) {
 
   for(var i=0; i < keys.length; i++) {
     k = keys[i];
-    sorted.push(data[k]);
+    sorted.push(data[k].replace(/(\n|\r|\r\n)/gm,''));
   }
 
   stream.writeHeaders(CSV.stringify(keys));
