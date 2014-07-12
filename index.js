@@ -33,12 +33,10 @@ function PhantStream(options) {
     return new PhantStream(options);
   }
 
-  options = options || {};
-
-  events.EventEmitter.call(this, options);
+  events.EventEmitter.call(this);
 
   // apply the options
-  util._extend(this, options);
+  util._extend(this, options || {});
 
   CSV.eol = '\n';
 
@@ -47,7 +45,7 @@ function PhantStream(options) {
 
 }
 
-app.name = 'phant csv stream';
+app.name = 'Stream CSV';
 app.cap = 50 * 1024 * 1024; // 50mb
 app.chunk = 500 * 1024; // 500k
 app.directory = 'tmp';
@@ -88,34 +86,14 @@ app.objectReadStream = function(id, page) {
 
 };
 
-app.sortKeys = function(data) {
-
-  var keys = [],
-      sorted = [];
-
-  for(var k in data) {
-
-    if(data.hasOwnProperty(k)) {
-      keys.push(k);
-    }
-
-  }
-
-  return keys.sort();
-
-};
-
 app.write = function(id, data) {
 
   var stream = this.writeStream(id),
-      keys = this.sortKeys(data),
-      sorted = [],
-      k;
+      keys = Object.keys(data).sort();
 
-  for(var i=0; i < keys.length; i++) {
-    k = keys[i];
-    sorted.push(data[k].replace(/(\r\n|\r|\n)/gm,' '));
-  }
+  var sorted = keys.map(function(k) {
+    return data[k].replace(/(\r\n|\r|\n)/gm, ' ');
+  });
 
   stream.writeHeaders(CSV.stringify(keys));
   stream.end(CSV.stringify(sorted));
