@@ -18,7 +18,6 @@
   "dependencies": {
     "mkdirp": "^0.3.5",
     "log-rotate": "^0.2.7",
-    "async": "^0.6.2",
     "csv-streamify": "^1.0.0",
     "csv-string": "^2.1.1",
     "rimraf": "^2.2.6"

@@ -11,7 +11,6 @@
 /**** Module dependencies ****/
 var util = require('util'),
     events = require('events'),
-    async = require('async'),
     CSV = require('csv-string'),
     fromCsv = require('csv-streamify'),
     helpers = require('./lib/helpers'),
@@ -92,7 +91,7 @@ app.write = function(id, data) {
       keys = Object.keys(data).sort();
 
   var sorted = keys.map(function(k) {
-    return data[k].replace(/(\r\n|\r|\n)/gm, ' ');
+    return data[k].toString().replace(/(\r\n|\r|\n)/gm, ' ');
   });
 
   stream.writeHeaders(CSV.stringify(keys));
