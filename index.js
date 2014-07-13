@@ -127,7 +127,7 @@ app.stats = function(id, cb) {
 
   var cap = this.cap;
 
-  this.helpers.stats(function(err, stats) {
+  this.helpers.stats(id, function(err, stats) {
 
     if(err) {
       cb(err);
