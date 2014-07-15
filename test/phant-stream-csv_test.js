@@ -11,6 +11,18 @@ var stream = new Stream({
   chunk: 50 * 1024
 });
 
+function generateData(size) {
+
+  var result = '';
+
+  for(var i=0; i < size; i++) {
+    result += 'a';
+  }
+
+  return result;
+
+}
+
 exports.create = function(test) {
 
   var writeable = stream.writeStream('abcdef12345');
@@ -18,11 +30,15 @@ exports.create = function(test) {
 
   // write a bunch of stuff
   for(i; i < 10000; i++) {
-    writeable.write(i + ',aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n');
+    if((i % 100) === 0) {
+      writeable.write(i + ',' + generateData(8000) + '\n');
+    } else {
+      writeable.write(i + ',' + generateData(100) + '\n');
+    }
   }
 
   // close writable stream
-  writeable.end(i + ',aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n');
+  writeable.end(i + ',' + generateData(100) + '\n');
 
   writeable.on('finish', function() {
     test.done();
