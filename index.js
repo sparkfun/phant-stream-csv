@@ -44,7 +44,7 @@ function PhantStream(options) {
 
 }
 
-app.name = 'Stream CSV';
+app.moduleName = 'Stream CSV';
 app.cap = 50 * 1024 * 1024; // 50mb
 app.chunk = 500 * 1024; // 500k
 app.directory = 'tmp';
